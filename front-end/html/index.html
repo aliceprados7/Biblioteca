@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Biblioteca Municipal | Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* VARIÁVEIS DE COR */
+    :root {
+      --primary: #4f46e5;       /* Indigo Moderno */
+      --primary-dark: #4338ca;
+      --secondary: #10b981;     /* Verde Esmeralda */
+      --secondary-dark: #059669;
+      --amber: #f59e0b;         /* Laranja/Ambar */
+      --amber-dark: #d97706;
+      --bg-body: #f3f4f6;
+      --bg-card: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    /* RESET & BASE */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER */
+    .page-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 3rem 1rem;
+      text-align: center;
+      margin-bottom: -3rem; /* Efeito de sobreposição */
+      padding-bottom: 5rem;
+    }
+
+    .page-header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .page-header p {
+      color: #e0e7ff;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    /* CONTAINER PRINCIPAL */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2rem;
+      padding-bottom: 3rem;
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      border-top: 5px solid var(--primary);
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.5rem;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .card h2 i { color: var(--primary); }
+
+    .card h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin: 1.5rem 0 0.8rem;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+    }
+
+    /* FORMULÁRIO */
+    .form-area { display: flex; flex-direction: column; gap: 1rem; }
+
+    input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #f9fafb;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    /* --- INÍCIO DAS ALTERAÇÕES NOS BOTÕES --- */
+    .button-area {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 1.5rem;
+    }
+
+    button {
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      color: white;
+      /* A transição 'all' suaviza a cor, a sombra e o movimento */
+      transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      position: relative; /* Necessário para o movimento funcionar bem */
+    }
+
+    /* Efeito de clique (apertar para baixo) */
+    button:active { 
+        transform: translateY(1px) scale(0.98) !important; /* O !important garante que sobrescreva o hover */
+        box-shadow: none !important;
+    }
+
+    /* === Botão Primário (Salvar - Azul Padrão) === */
+    button:first-of-type {
+      background-color: var(--primary);
+      box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2); /* Sombra azul inicial sutil */
+    }
+
+    /* HOVER: Movimento e Sombra Azul Forte */
+    button:first-of-type:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-4px); /* Move 4 pixels para cima */
+      box-shadow: 0 12px 20px -3px rgba(79, 70, 229, 0.4); /* Sombra azul grande */
+    }
+
+
+    /* === Botão Secundário (Atualizar - Fantasma) === */
+    button:last-of-type {
+      background-color: transparent;
+      border: 2px solid var(--border); /* Borda um pouco mais grossa */
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* HOVER: Movimento e Sombra Cinza Sutil */
+    button:last-of-type:hover {
+      background-color: #fff;
+      border-color: var(--text-muted);
+      color: var(--text-main);
+      transform: translateY(-3px); /* Move um pouco menos que o botão principal */
+      box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1); /* Sombra cinza */
+    }
+    /* --- FIM DAS ALTERAÇÕES NOS BOTÕES --- */
+
+
+    /* LISTAS */
+    ul {
+      list-style: none;
+      margin-top: 0.5rem;
+      max-height: 250px;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
+    /* Scrollbar bonita */
+    ul::-webkit-scrollbar { width: 6px; }
+    ul::-webkit-scrollbar-thumb { background-color: #d1d5db; border-radius: 10px; }
+
+    li {
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      background: #f8fafc;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    li strong {
+      color: var(--primary);
+      background: #e0e7ff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+
+    /* Rodapé */
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      background: #fff;
+    }
+
+    /* --- OVERRIDES DE CORES PARA OS CARDS ESPECÍFICOS --- */
+
+    /* CARD LIVROS (VERDE) */
+    .card:nth-child(2) { border-top-color: var(--secondary); }
+    .card:nth-child(2) h2 i { color: var(--secondary); }
+    .card:nth-child(2) li strong { color: var(--secondary-dark); background: #d1fae5; }
+    
+    /* Botão Salvar Verde */
+    .card:nth-child(2) button:first-of-type { 
+        background-color: var(--secondary);
+        box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+    }
+    /* Hover do Botão Salvar Verde com sombra verde */
+    .card:nth-child(2) button:first-of-type:hover { 
+        background-color: var(--secondary-dark); 
+        box-shadow: 0 12px 20px -3px rgba(16, 185, 129, 0.4);
+    }
+
+
+    /* CARD EMPRESTIMOS (LARANJA/AMBAR) */
+    .card:nth-child(3) { border-top-color: var(--amber); }
+    .card:nth-child(3) h2 i { color: var(--amber); }
+    .card:nth-child(3) li strong { color: #b45309; background: #fef3c7; }
+
+    /* Botão Salvar Laranja */
+    .card:nth-child(3) button:first-of-type { 
+        background-color: var(--amber); 
+        box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.2);
+    }
+    /* Hover do Botão Salvar Laranja com sombra laranja */
+    .card:nth-child(3) button:first-of-type:hover { 
+        background-color: var(--amber-dark);
+        box-shadow: 0 12px 20px -3px rgba(245, 158, 11, 0.4);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header class="page-header">
+    <h1><i class="fa-solid fa-book-open-reader"></i> Biblioteca Municipal</h1>
+    <p>Painel de Gerenciamento Integrado</p>
+  </header>
+
+  <div class="container">
+
+    <section class="card">
+      <h2><i class="fa-solid fa-users"></i> Clientes</h2>
+
+      <div class="form-area">
+        <input id="clienteNome" placeholder="Nome Completo">
+        <input id="clienteCpf" placeholder="CPF (somente números)">
+        <input id="clienteTelefone" placeholder="Telefone">
+      </div>
+
+      <div class="button-area">
+        <button onclick="criarCliente()"><i class="fa-solid fa-check"></i> Salvar</button>
+        <button onclick="listarClientes()"><i class="fa-solid fa-rotate"></i> Atualizar</button>
+      </div>
+
+      <h3>Registros Recentes</h3>
+      <ul id="listaClientes">
+        <li style="justify-content: center; color: #9ca3af; border: 1px dashed #e5e7eb;">Nenhum cliente listado</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2><i class="fa-solid fa-book"></i> Acervo</h2>
+
+      <div class="form-area">
+        <input id="livroNome" placeholder="Título do Livro">
+        <input id="livroAutor" placeholder="Nome do Autor">
+      </div>
+
+      <div class="button-area">
+        <button onclick="criarLivro()"><i class="fa-solid fa-check"></i> Salvar</button>
+        <button onclick="listarLivros()"><i class="fa-solid fa-rotate"></i> Atualizar</button>
+      </div>
+
+      <h3>Registros Recentes</h3>
+      <ul id="listaLivros">
+         <li style="justify-content: center; color: #9ca3af; border: 1px dashed #e5e7eb;">Nenhum livro listado</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2><i class="fa-solid fa-address-card"></i> Empréstimos</h2>
+
+      <div class="form-area">
+        <input id="empClienteId" type="number" placeholder="ID do Cliente">
+        <input id="empLivroId" type="number" placeholder="ID do Livro">
+      </div>
+
+      <div class="button-area">
+        <button onclick="criarEmprestimo()"><i class="fa-solid fa-check"></i> Registrar</button>
+        <button onclick="listarEmprestimos()"><i class="fa-solid fa-rotate"></i> Atualizar</button>
+      </div>
+
+      <h3>Registros Recentes</h3>
+      <ul id="listaEmprestimos">
+         <li style="justify-content: center; color: #9ca3af; border: 1px dashed #e5e7eb;">Nenhum empréstimo listado</li>
+      </ul>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Projeto ADS • Sistema de Gestão de Biblioteca</p>
+  </footer>
+
+  <script>
+    const API = "http://localhost:4567";
+
+    // FUNÇÃO UTILITÁRIA PARA FEEDBACK VISUAL NO BOTÃO
+    function setButtonLoading(btn, isLoading) {
+        if (isLoading) {
+            btn.dataset.originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...';
+            btn.disabled = true;
+            btn.style.cursor = 'not-allowed';
+        } else {
+            btn.innerHTML = btn.dataset.originalText;
+            btn.disabled = false;
+            btn.style.cursor = 'pointer';
+        }
+    }
+
+    // CLIENTES
+    function criarCliente() {
+      const btn = event.target.closest('button'); // Garante que pega o botão mesmo clicando no ícone
+      setButtonLoading(btn, true);
+
+      fetch(`${API}/clientes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: clienteNome.value,
+          cpf: clienteCpf.value,
+          telefone: clienteTelefone.value
+        })
+      }).then(() => {
+        listarClientes();
+        setButtonLoading(btn, false);
+        clienteNome.value = ''; clienteCpf.value = ''; clienteTelefone.value = '';
+      }).catch(() => setButtonLoading(btn, false));
+    }
+
+    function listarClientes() {
+      const btn = event.target.closest('button');
+      if(btn) setButtonLoading(btn, true);
+
+      fetch(`${API}/clientes`)
+        .then(res => res.json())
+        .then(dados => {
+          listaClientes.innerHTML = "";
+          if(dados.length === 0) {
+            listaClientes.innerHTML = '<li style="justify-content: center; color: #9ca3af; border: 1px dashed #e5e7eb;">Nenhum cliente encontrado</li>';
+          } else {
+            dados.forEach(c => {
+                listaClientes.innerHTML += `
+                <li>
+                    <strong>#${c.id}</strong>
+                    <span>${c.nome}</span>
+                    <span style="margin-left:auto; font-size:0.8em; color:#6b7280">${c.telefone || ''}</span>
+                </li>`;
+            });
+          }
+          if(btn) setButtonLoading(btn, false);
+        }).catch(() => { if(btn) setButtonLoading(btn, false); });
+    }
+
+    // LIVROS
+    function criarLivro() {
+      const btn = event.target.closest('button');
+      setButtonLoading(btn, true);
+
+      fetch(`${API}/livros`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: livroNome.value,
+          autor: livroAutor.value
+        })
+      }).then(() => {
+        listarLivros();
+        setButtonLoading(btn, false);
+        livroNome.value = ''; livroAutor.value = '';
+      }).catch(() => setButtonLoading(btn, false));
+    }
+
+    function listarLivros() {
+      const btn = event.target.closest('button');
+      if(btn) setButtonLoading(btn, true);
+
+      fetch(`${API}/livros`)
+        .then(res => res.json())
+        .then(dados => {
+          listaLivros.innerHTML = "";
+          if(dados.length === 0) {
+            listaLivros.innerHTML = '<li style="justify-content: center; color: #9ca3af; border: 1px dashed #e5e7eb;">Nenhum livro encontrado</li>';
+          } else {
+            dados.forEach(l => {
+                listaLivros.innerHTML += `
+                <li>
+                    <strong>#${l.id}</strong>
+                    <span>${l.nome}</span>
+                    <span style="margin-left:auto; font-size:0.8em; font-style:italic; color:#6b7280">${l.autor}</span>
+                </li>`;
+            });
+          }
+          if(btn) setButtonLoading(btn, false);
+        }).catch(() => { if(btn) setButtonLoading(btn, false); });
+    }
+
+    // EMPRESTIMOS
+    function criarEmprestimo() {
+      const btn = event.target.closest('button');
+      setButtonLoading(btn, true);
+
+      fetch(`${API}/emprestimos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          idCliente: Number(empClienteId.value),
+          idLivro: Number(empLivroId.value)
+        })
+      }).then(() => {
+        listarEmprestimos();
+        setButtonLoading(btn, false);
+        empClienteId.value = ''; empLivroId.value = '';
+      }).catch(() => setButtonLoading(btn, false));
+    }
+
+    function listarEmprestimos() {
+      const btn = event.target.closest('button');
+      if(btn) setButtonLoading(btn, true);
+
+      fetch(`${API}/emprestimos`)
+        .then(res => res.json())
+        .then(dados => {
+          listaEmprestimos.innerHTML = "";
+          if(dados.length === 0) {
+            listaEmprestimos.innerHTML = '<li style="justify-content: center; color: #9ca3af; border: 1px dashed #e5e7eb;">Nenhum empréstimo ativo</li>';
+          } else {
+              dados.forEach(e => {
+                listaEmprestimos.innerHTML += `
+                <li>
+                <strong>#${e.id}</strong>
+                <span><i class="fa-solid fa-user" style="font-size:0.7em; margin-right:4px"></i> ${e.idCliente}</span>
+                <span style="margin-left:10px"><i class="fa-solid fa-book" style="font-size:0.7em; margin-right:4px"></i> ${e.idLivro}</span>
+                </li>`;
+            });
+          }
+          if(btn) setButtonLoading(btn, false);
+        }).catch(() => { if(btn) setButtonLoading(btn, false); });
+    }
+  </script>
+
+</body>
+</html>
